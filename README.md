@@ -1,4 +1,4 @@
-# Barcelona Housing Market Map
+# Barcelona Property Market Map
 
 A React-TypeScript application for visualizing housing market data across Barcelona districts with interactive maps and statistical analysis.
 

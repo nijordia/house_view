@@ -1,7 +1,7 @@
 {
-  "name": "Barcelona Housing Market Map",
+  "name": "Barcelona Property Market Map",
   "short_name": "Housing Map",
-  "description": "Interactive Barcelona housing market analysis",
+  "description": "Interactive Barcelona Property Market analysis",
   "icons": [
     {
       "src": "/favicon-16x16.png",

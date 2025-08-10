@@ -1,9 +1,112 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
+    background: #f8fafc;
+}
+
+#main-layout {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    width: 100%;
+    gap: 24px;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
+    #main-layout {
+        flex-direction: column;
+        padding: 16px;
+        gap: 16px;
+        min-height: 100vh;
+        align-items: stretch; /* Make both elements stretch to full width */
+    }
+    
+    #map {
+        flex: none;
+        order: 2; /* Map goes below info card on mobile */
+        min-height: 60vh;
+        width: 100%; /* Force full width */
+        max-width: 100%; /* Don't exceed container */
+    }
+    
+    .info-card {
+        flex: none;
+        order: 1; /* Info card goes above map on mobile */
+        width: 100%; /* Force same width as map */
+        max-width: none; /* Remove desktop max-width constraint */
+        margin-bottom: 16px;
+        position: relative;
+        box-sizing: border-box; /* Include padding in width calculation */
+    }
+
+    /* Make sure the map container div also uses full width */
+    #map > div {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    /* Make SVG responsive */
+    svg {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100%;
+    }
+    
+    /* Adjust filter controls for mobile */
+    .filter-controls {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .filter-controls > div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .filter-controls select {
+        width: 100%;
+    }
+    
+    /* Adjust text sizes */
+    h1 {
+        font-size: 1.25rem !important;
+    }
+    
+    .info-card h2 {
+        font-size: 1.2rem;
+    }
+    
+    .label {
+        display: none;
+        font-size: 12px !important;
+        font-weight: 700;
+    }
+}
+
+@media (max-width: 480px) {
+    #main-layout {
+        padding: 12px;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .info-card {
+        padding: 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .label {
+        display: none; /* Hide labels on small mobile too */
+    }
 }
 
 #map {
@@ -14,6 +117,7 @@ body {
     background: white;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    min-width: 0;
 }
 
 .card {
@@ -36,26 +140,6 @@ body {
     font-size: 1em;
 }
 
-#main-layout {
-    display: flex;
-    flex-direction: row;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    gap: 24px;
-    padding: 24px;
-    box-sizing: border-box;
-}
-
-#map {
-    flex: 1 1 auto;
-    min-width: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f8f8f8;
-}
-
 .info-card {
     flex: 0 0 400px;
     background: white;
@@ -65,7 +149,6 @@ body {
     min-height: fit-content;
     max-width: 450px;
 }
-
 
 .info-card h2 {
     margin-top: 0;
@@ -123,9 +206,17 @@ body {
 
 .label {
     font-family: 'Inter', sans-serif;
-    font-size: 11px;
+    font-size: 16px;
     fill: #475569;
     text-anchor: middle;
     pointer-events: none;
-    font-weight: 500;
+    font-weight: 600;
+}
+
+/* Filter controls styling */
+.filter-controls {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: center;
 }

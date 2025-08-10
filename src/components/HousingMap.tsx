@@ -277,11 +277,11 @@ export default function HousingMap() {
             <div id="map">
                 <div>
                     <h1 style={{color:'#0F172A', fontWeight: 600, fontSize: '1.5rem'}}>
-                        Barcelona Housing Market
+                        Barcelona Property Market
                     </h1>
                     
-                    {/* Filter Controls */}
-                    <div style={{ 
+                    {/* Filter Controls - Add class for styling */}
+                    <div className="filter-controls" style={{ 
                         display: 'flex', 
                         gap: '16px', 
                         marginBottom: '16px',
@@ -341,7 +341,13 @@ export default function HousingMap() {
                         </div>
                     </div>
                     
-                    <svg width="600" height="600" viewBox="0 0 1000 1000">
+                <div style={{ width: '100%', maxWidth: '600px' }}>
+                    <svg
+                         width="100%"
+                          height="auto" 
+                          viewBox="0 0 1000 1000"
+                          style={{ maxWidth: '600px', height: 'auto' }}
+                        >
                         {districtPaths.map(({ label, d }) => (
                             <path
                                 key={label}
@@ -373,6 +379,7 @@ export default function HousingMap() {
                     </svg>
                 </div>
             </div>
+         </div>
 
             {showCard && (
                 <div className="info-card">
