@@ -1,0 +1,5 @@
+<!-- filepath: c:\Users\Nicol\Desktop\Software\house_view\public\favicon.svg -->
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="4" fill="#3B82F6"/>
+  <path d="M8 20h4v8H8v-8zm6-8h4v16h-4V12zm6-6h4v22h-4V6z" fill="white"/>
+</svg>

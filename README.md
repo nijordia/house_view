@@ -1,6 +1,24 @@
-# Housing Market Map Application
+# Barcelona Housing Market Map
 
-This project is a TypeScript-based web application that displays a map with interactive polygons representing different housing market statistics. When a polygon is clicked, a card format displays relevant statistics for that area.
+A React-TypeScript application for visualizing housing market data across Barcelona districts with interactive maps and statistical analysis.
+
+🔗 **Live Demo:** [housing.codecongrio.com](https://housing.codecongrio.com)
+
+## Features
+- Interactive SVG map of Barcelona districts
+- Real-time housing price visualization
+- Filter by property type (Residential/Commercial) and operation (Purchase/Rent/Room Rent)
+- Statistical analysis with normal distribution curves
+- Responsive design with modern UI
+
+## Tech Stack
+- React 19 + TypeScript
+- Vite for build tooling
+- Plotly.js for data visualization
+- Modern CSS with responsive design
+
+## Data Source
+Property data scraped from Idealista using a custom Python scraper (separate repository).
 
 ## Project Structure
 
@@ -30,41 +48,47 @@ housing-market-map-app
 ## Setup Instructions
 
 1. **Clone the repository:**
-   ```
+   ```bash
    git clone <repository-url>
-   cd housing-market-map-app
+   cd house_view
    ```
 
 2. **Install dependencies:**
-   ```
+   ```bash
    npm install
    ```
 
-3. **Run the application:**
-   ```
-   npm start
+3. **Run the development server:**
+   ```bash
+   npm run dev
    ```
 
-4. **Open your browser:**
-   Navigate to `http://localhost:3000` to view the application.
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+5. **Preview production build:**
+   ```bash
+   npm run preview
+   ```
 
 ## Usage
 
-- Click on the polygons on the map to view housing market statistics in a card format.
-- The application fetches data dynamically based on the selected polygon.
+- **Interactive Map:** Click on any Barcelona district to view detailed housing statistics
+- **Property Filters:** Switch between Residential and Commercial properties
+- **Operation Filters:** Compare Purchase prices, Rent prices, and Room Rent prices
+- **Dynamic Updates:** Info card updates automatically when changing filters or selecting districts
+- **Statistical Charts:** View price distribution curves for selected districts
 
-## Technologies Used
+## Deployment
 
-- TypeScript
-- Express.js
-- HTML/CSS
-- JavaScript
-- [Any additional libraries or frameworks used]
+This application is deployed on Vercel at [housing.codecongrio.com](https://housing.codecongrio.com).
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License.
