@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Plotly from 'plotly.js-dist-min';
-
-
-
+import { housingDataService } from '../services/housingDataService';
+import { HousingStats } from '../types';
 
 export const svgToDataCommune: Record<string, string> = {
     "Ciutat Vella": "ciutat-vella",
@@ -17,17 +16,6 @@ export const svgToDataCommune: Record<string, string> = {
     "Sant Martí": "sant-marti"
 };
 
-type Stats = {
-    commune: string;
-    date: string;
-    median_price_per_sqm: number;
-    mean_price_per_sqm: number;
-    num_observations: number;
-    std_dev_price_per_sqm: number;
-    min_price_per_sqm: number;
-    max_price_per_sqm: number;
-    message?: string;
-};
 
 const districtPaths = [
     {
@@ -73,21 +61,39 @@ const districtPaths = [
 ];
 
 const districtLabels = [
-    { label: "Ciutat Vella", x: 615, y: 558 },
+    { label: "Ciutat Vella", x: 630, y: 558 },
     { label: "Eixample", x: 557, y: 496 },
-    { label: "Sants-Montjuïc", x: 460, y: 688 },
-    { label: "Les Corts", x: 298, y: 548 },
-    { label: "Sarrià-Sant Gervasi", x: 250, y: 366 },
-    { label: "Gràcia", x: 490, y: 390 },
-    { label: "Horta-Guinardó", x: 420, y: 227 },
-    { label: "Nou Barris", x: 570, y: 143 },
-    { label: "Sant Andreu", x: 674, y: 226 },
+    { label: "Sants-Montjuïc", x: 490, y: 688 },
+    { label: "Les Corts", x: 330, y: 548 },
+    { label: "Sarrià-Sant Gervasi", x: 330, y: 390 },
+    { label: "Gràcia", x: 510, y: 390 },
+    { label: "Horta-Guinardó", x: 470, y: 235 },
+    { label: "Nou Barris", x: 600, y: 149 },
+    { label: "Sant Andreu", x: 710, y: 226 },
     { label: "Sant Martí", x: 730, y: 400 }
 ];
 
+const getPriceColor = (commune: string, allStats: HousingStats[]): string => {
+    const stats = allStats.find(stat => stat.commune === commune);
+    if (!stats) return '#F1F5F9'; // Light gray for no data
+    
+    const price = stats.median_price_per_sqm;
+    
+    // Price ranges based on your data
+    if (price < 3000) return '#DBEAFE'; // Light blue (cheap)
+    if (price < 4000) return '#93C5FD'; // Medium blue
+    if (price < 5000) return '#60A5FA'; // Blue
+    if (price < 6000) return '#FBBF24'; // Yellow/orange
+    if (price < 7000) return '#F59E0B'; // Orange
+    return '#EF4444'; // Red (expensive)
+};
+
+
 export default function HousingMap() {
-    const [stats, setStats] = useState<Stats | null>(null);
+    const [stats, setStats] = useState<HousingStats | null>(null);
+    const [allStats, setAllStats] = useState<HousingStats[]>([]);
     const [showCard, setShowCard] = useState(false);
+    const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
     const plotRef = useRef<HTMLDivElement>(null);
 
     const handleDistrictClick = async (e: React.MouseEvent<SVGPathElement>) => {
@@ -97,8 +103,7 @@ export default function HousingMap() {
         setShowCard(true);
         if (communeId) {
             try {
-                const response = await fetch(`/api/housing-stats/${communeId}`);
-                const data = await response.json();
+                const data = await housingDataService.getStatsByCommune(communeId);
                 setStats(data);
             } catch {
                 setStats(null);
@@ -113,44 +118,89 @@ export default function HousingMap() {
         setStats(null);
     };
 
+    // Load all data on mount for coloring
     useEffect(() => {
-        if (stats && !stats.message && plotRef.current) {
+        const loadAllStats = async () => {
+            await housingDataService.loadData();
+            // Get all stats for coloring
+            const allData: HousingStats[] = [];
+            for (const commune of Object.values(svgToDataCommune)) {
+                const data = await housingDataService.getStatsByCommune(commune);
+                if (data) allData.push(data);
+            }
+            setAllStats(allData);
+        };
+        loadAllStats();
+    }, []);
+    useEffect(() => {
+        if (stats && plotRef.current) {
             renderNormalCurve(stats, plotRef.current);
         }
     }, [stats]);
 
     return (
-        <div>
-            <h1 style={{color:'red'}}> MAP Test</h1>
-            <svg width="600" height="600" viewBox="0 0 1000 1000">
-                {districtPaths.map(({ label, d }) => (
-                    <path
-                        key={label}
-                        className="district"
-                        data-label={label}
-                        d={d}
-                        onClick={handleDistrictClick}
-                        style={{ cursor: 'pointer' }}
-                    />
-                ))}
-                {districtLabels.map(({ label, x, y }) => (
-                    <text className="label" x={x} y={y} key={label}>{label}</text>
-                ))}
-            </svg>
+        <div id="main-layout">
+            <div id="map">
+                <div>
+                    <h1 style={{color:'#0F172A', fontWeight: 600, fontSize: '1.5rem'}}>
+                        Barcelona Housing Market
+                    </h1>
+                    <svg width="600" height="600" viewBox="0 0 1000 1000">
+                        {districtPaths.map(({ label, d }) => (
+                            <path
+                                key={label}
+                                className={`district ${selectedDistrict === label ? 'selected' : ''}`}
+                                data-label={label}
+                                d={d}
+                                onClick={handleDistrictClick}
+                                style={{ 
+                                    cursor: 'pointer',
+                                    fill: getPriceColor(svgToDataCommune[label], allStats)
+                                }}
+                            />
+                        ))}
+                        {districtLabels.map(({ label, x, y }) => (
+                            <text className="label" x={x} y={y} key={label}>{label}</text>
+                        ))}
+                    </svg>
+                </div>
+            </div>
 
+           
             {showCard && (
                 <div className="info-card">
-                    <button onClick={handleClose}>Close</button>
-                    {!stats || stats.message ? (
+                    <button onClick={handleClose} style={{
+                        position: 'absolute',
+                        top: '16px',
+                        right: '16px',
+                        border: 'none',
+                        background: '#F1F5F9',
+                        borderRadius: '6px',
+                        padding: '4px 8px',
+                        cursor: 'pointer'
+                    }}>✕</button>
+                    
+                    {!stats ? (
                         <div><p>No data available.</p></div>
                     ) : (
-                        <div>
-                            <p><strong>District:</strong> {stats.commune.replace(/-/g, ' ')}</p>
-                            <p><strong>Date:</strong> {stats.date}</p>
-                            <p><strong>Median Price per sqm:</strong> €{stats.median_price_per_sqm.toFixed(0)}</p>
-                            <p><strong>Mean Price per sqm:</strong> €{stats.mean_price_per_sqm.toFixed(0)}</p>
-                            <p><strong>Observations:</strong> {stats.num_observations}</p>
-                            <div ref={plotRef} style={{ width: 240, height: 80 }} />
+                    <div>
+                            <h2>{stats.commune.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h2>
+                            <p className="date">{new Date(stats.date).toLocaleDateString()}</p>
+                            
+                            <div className="stat">
+                                <span className="stat-label">Median Price per sqm:</span>
+                                <span className="stat-value">€{Math.round(stats.median_price_per_sqm).toLocaleString('en-US')}</span>
+                            </div>
+                            <div className="stat">
+                                <span className="stat-label">Mean Price per sqm:</span>
+                                <span className="stat-value">€{Math.round(stats.mean_price_per_sqm).toLocaleString('en-US')}</span>
+                            </div>
+                            <div className="stat">
+                                <span className="stat-label">Observations:</span>
+                                <span className="stat-value">{stats.num_observations.toLocaleString('en-US')}</span>
+                            </div>
+                            
+                            <div ref={plotRef} style={{ width: '100%', height: 200, marginTop: 16 }} />
                         </div>
                     )}
                 </div>
@@ -159,18 +209,29 @@ export default function HousingMap() {
     );
 }
 
-function renderNormalCurve(stats: Stats, container: HTMLDivElement) {
+function renderNormalCurve(stats: HousingStats, container: HTMLDivElement) {
     const mean = stats.mean_price_per_sqm;
     const sd = stats.std_dev_price_per_sqm;
     const min = stats.min_price_per_sqm;
     const max = stats.max_price_per_sqm;
 
-    const x = [];
-    const y = [];
-    for (let i = 0; i <= 100; i++) {
-        const val = min + (i / 100) * (max - min);
+    // Choose number of points for smoothness, capped for performance
+    const numPoints = 10; // fixed smoothness, avoids tying to sample size
+    const binWidth = (max - min) / numPoints; // €/sqm range per point
+
+    const x: number[] = [];
+    const y: number[] = [];
+
+    for (let i = 0; i <= numPoints; i++) {
+        const val = min + (i / numPoints) * (max - min);
         x.push(val);
-        y.push(Math.exp(-0.5 * Math.pow((val - mean) / sd, 2)) / (sd * Math.sqrt(2 * Math.PI)));
+
+        // PDF of normal distribution
+        const pdf = Math.exp(-0.5 * Math.pow((val - mean) / sd, 2)) / (sd * Math.sqrt(2 * Math.PI));
+
+        // Scale density to estimated count per bin
+        const estimatedCount = pdf * stats.num_observations * binWidth;
+        y.push(estimatedCount);
     }
 
     Plotly.newPlot(container, [{
@@ -178,24 +239,35 @@ function renderNormalCurve(stats: Stats, container: HTMLDivElement) {
         y,
         type: 'scatter',
         mode: 'lines',
-        line: { color: '#1e90ff' },
-        hovertemplate: '€/sqm: %{x:.0f}<extra></extra>'
+        line: { color: 'rgba(59, 130, 246, 0.8)', width: 3 },
+        fill: 'tozeroy',
+        fillcolor: 'rgba(59, 130, 246, 0.1)',
+        hovertemplate: '€/sqm: %{x:,.0f}<br>Listings: %{y:,.0f}<extra></extra>'
     }], {
-        margin: { t: 10, b: 30, l: 30, r: 10 },
+        margin: { t: 20, b: 40, l: 50, r: 20 },
         xaxis: {
-            title: '€/sqm',
-            showgrid: false,
+            title: { text: 'Price per sqm (€)', font: { family: 'Inter', size: 12, color: '#64748B' } },
+            showgrid: true,
+            gridcolor: '#F1F5F9',
             tickformat: ',d',
-            tickangle: 0,
+            tickfont: { family: 'Inter', size: 10, color: '#64748B' },
             fixedrange: true
         },
         yaxis: {
-            showticklabels: false,
-            showgrid: false,
+            title: { text: 'Estimated Listings', font: { family: 'Inter', size: 12, color: '#64748B' } },
+            showticklabels: true,
+            showgrid: true,
+            gridcolor: '#F1F5F9',
+            tickformat: ',0f', // integer ticks
+            tick0: 0,
+            dtick: Math.ceil(Math.max(...y) / 5), // ~5 evenly spaced ticks
+            tickfont: { family: 'Inter', size: 10, color: '#64748B' },
             fixedrange: true
         },
-        height: 120,
-        width: 260
+        plot_bgcolor: '#FAFAFA',
+        paper_bgcolor: 'white',
+        height: 200,
+        font: { family: 'Inter' }
     }, {
         displayModeBar: false,
     });
