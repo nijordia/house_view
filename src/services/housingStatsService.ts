@@ -5,7 +5,7 @@ export class HousingStatsService {
     private housingData: any[];
 
     constructor() {
-        const dataPath = path.join(__dirname, '../../latest_data.json');
+        const dataPath = path.join(__dirname, '..', '..', 'public', 'latest_data.json');
         this.housingData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
     }
 

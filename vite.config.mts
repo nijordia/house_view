@@ -6,7 +6,7 @@ import { resolve } from 'path';
 export default defineConfig({
   root: 'src/client',
   build: {
-    outDir: resolve(__dirname, 'src/public'),
+    outDir: resolve(__dirname, 'public'),
     emptyOutDir: true,
   },
   server: {

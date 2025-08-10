@@ -1,4 +1,4 @@
-
+[
     {
         "date": "2025-01-03",
         "commune": "ciutat-vella",
@@ -14,7 +14,7 @@
         "num_elevator_0": 1043,
         "num_elevator_1": 1138
     },
-        {
+    {
         "date": "2024-12-31",
         "commune": "eixample",
         "num_observations": 1799,
@@ -29,7 +29,7 @@
         "num_elevator_0": 174,
         "num_elevator_1": 1625
     },
-        {
+    {
         "date": "2024-12-31",
         "commune": "gracia",
         "num_observations": 765,
@@ -44,7 +44,7 @@
         "num_elevator_0": 233,
         "num_elevator_1": 532
     },
-        {
+    {
         "date": "2025-01-03",
         "commune": "horta-guinardo",
         "num_observations": 741,
@@ -59,7 +59,7 @@
         "num_elevator_0": 300,
         "num_elevator_1": 441
     },
-        {
+    {
         "date": "2025-01-03",
         "commune": "les-corts",
         "num_observations": 527,
@@ -74,7 +74,7 @@
         "num_elevator_0": 98,
         "num_elevator_1": 429
     },
-        {
+    {
         "date": "2025-01-03",
         "commune": "nou-barris",
         "num_observations": 671,
@@ -89,7 +89,7 @@
         "num_elevator_0": 375,
         "num_elevator_1": 296
     },
-        {
+    {
         "date": "2025-01-03",
         "commune": "sant-andreu",
         "num_observations": 598,
@@ -104,7 +104,7 @@
         "num_elevator_0": 245,
         "num_elevator_1": 353
     },
-        {
+    {
         "date": "2025-01-03",
         "commune": "sant-marti",
         "num_observations": 1256,
@@ -119,7 +119,7 @@
         "num_elevator_0": 344,
         "num_elevator_1": 912
     },
-        {
+    {
         "date": "2025-01-03",
         "commune": "sants-montjuic",
         "num_observations": 946,
@@ -134,7 +134,7 @@
         "num_elevator_0": 386,
         "num_elevator_1": 560
     },
-        {
+    {
         "date": "2025-01-03",
         "commune": "sarria-sant-gervasi",
         "num_observations": 1203,
@@ -149,5 +149,4 @@
         "num_elevator_0": 252,
         "num_elevator_1": 951
     }
-
 ]
