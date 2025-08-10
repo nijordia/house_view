@@ -6,7 +6,10 @@ declare module 'plotly.js-dist-min' {
         mode?: string;
         line?: {
             color: string;
+            width?: number;
         };
+        fill?: string;
+        fillcolor?: string;
         hovertemplate?: string;
     }
 
@@ -18,19 +21,34 @@ declare module 'plotly.js-dist-min' {
             r: number;
         };
         xaxis?: {
-            title: string;
-            showgrid: boolean;
-            tickformat: string;
-            tickangle: number;
-            fixedrange: boolean;
+            title?: { 
+                text: string; 
+                font?: { family: string; size: number; color: string; }
+            };
+            showgrid?: boolean;
+            gridcolor?: string;
+            tickformat?: string;
+            tickfont?: { family: string; size: number; color: string; };
+            fixedrange?: boolean;
         };
         yaxis?: {
-            showticklabels: boolean;
-            showgrid: boolean;
-            fixedrange: boolean;
+            title?: { 
+                text: string; 
+                font?: { family: string; size: number; color: string; }
+            };
+            showticklabels?: boolean;
+            showgrid?: boolean;
+            gridcolor?: string;
+            tickformat?: string;
+            tick0?: number;
+            dtick?: number;
+            tickfont?: { family: string; size: number; color: string; };
+            fixedrange?: boolean;
         };
+        plot_bgcolor?: string;
+        paper_bgcolor?: string;
         height?: number;
-        width?: number;
+        font?: { family: string; };
     }
 
     interface Config {

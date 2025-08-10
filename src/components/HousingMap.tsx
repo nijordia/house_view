@@ -77,33 +77,154 @@ const getPriceColor = (commune: string, allStats: HousingStats[]): string => {
     const stats = allStats.find(stat => stat.commune === commune);
     if (!stats) return '#F1F5F9'; // Light gray for no data
     
-    const price = stats.median_price_per_sqm;
+    const price = getMedianPrice(stats);
     
-    // Price ranges based on your data
-    if (price < 3000) return '#DBEAFE'; // Light blue (cheap)
-    if (price < 4000) return '#93C5FD'; // Medium blue
-    if (price < 5000) return '#60A5FA'; // Blue
-    if (price < 6000) return '#FBBF24'; // Yellow/orange
-    if (price < 7000) return '#F59E0B'; // Orange
-    return '#EF4444'; // Red (expensive)
+    // Get min and max prices from current dataset for relative scaling
+    const prices = allStats.map(s => getMedianPrice(s));
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    
+    // Calculate relative position (0-1)
+    const relative = (price - minPrice) / (maxPrice - minPrice);
+    
+    // Apply color based on relative position
+    if (relative < 0.2) return '#DBEAFE'; // Light blue (cheapest 20%)
+    if (relative < 0.4) return '#93C5FD'; // Medium blue
+    if (relative < 0.6) return '#60A5FA'; // Blue
+    if (relative < 0.8) return '#FBBF24'; // Yellow/orange
+    return '#EF4444'; // Red (most expensive 20%)
 };
 
+const isRentalOperation = (operation: string): boolean => {
+    return operation === 'alquiler' || operation === 'alquiler_habitacion';
+};
+
+const getMedianPrice = (stats: HousingStats): number => {
+    return isRentalOperation(stats.operation) 
+        ? stats.median_price! 
+        : stats.median_price_per_sqm!;
+};
+
+const getMeanPrice = (stats: HousingStats): number => {
+    return isRentalOperation(stats.operation) 
+        ? stats.mean_price! 
+        : stats.mean_price_per_sqm!;
+};
+
+const getMinPrice = (stats: HousingStats): number => {
+    return isRentalOperation(stats.operation) 
+        ? stats.min_price! 
+        : stats.min_price_per_sqm!;
+};
+
+const getMaxPrice = (stats: HousingStats): number => {
+    return isRentalOperation(stats.operation) 
+        ? stats.max_price! 
+        : stats.max_price_per_sqm!;
+};
+
+const getStdDev = (stats: HousingStats): number => {
+    return isRentalOperation(stats.operation) 
+        ? stats.std_dev_price! 
+        : stats.std_dev_price_per_sqm!;
+};
+
+const getPriceLabel = (operation: string): string => {
+    return isRentalOperation(operation) ? 'Price' : 'Price per sqm';
+};
+
+const getPriceUnit = (operation: string): string => {
+    return '€';
+    //return isRentalOperation(operation) ? '€' : '€/sqm';
+};
+
+
+function renderNormalCurve(stats: HousingStats, container: HTMLDivElement) {
+    const mean = getMeanPrice(stats);
+    const sd = getStdDev(stats);
+    const min = getMinPrice(stats);
+    const max = getMaxPrice(stats);
+
+    // Choose number of points for smoothness, capped for performance
+    const numPoints = 10;
+    const binWidth = (max - min) / numPoints;
+
+    const x: number[] = [];
+    const y: number[] = [];
+
+    for (let i = 0; i <= numPoints; i++) {
+        const val = min + (i / numPoints) * (max - min);
+        x.push(val);
+
+        // PDF of normal distribution
+        const pdf = Math.exp(-0.5 * Math.pow((val - mean) / sd, 2)) / (sd * Math.sqrt(2 * Math.PI));
+        // Scale density to estimated count per bin
+        const estimatedCount = pdf * stats.num_observations * binWidth;
+        y.push(estimatedCount);
+    }
+
+    const priceUnit = getPriceUnit(stats.operation);
+    
+    Plotly.newPlot(container, [{
+        x,
+        y,
+        type: 'scatter',
+        mode: 'lines',
+        line: { color: 'rgba(59, 130, 246, 0.8)', width: 3 },
+        fill: 'tozeroy',
+        fillcolor: 'rgba(59, 130, 246, 0.1)',
+        hovertemplate: `${priceUnit}: %{x:,.0f}<br>Listings: %{y:,.0f}<extra></extra>`
+    }], {
+        margin: { t: 20, b: 40, l: 50, r: 20 },
+        xaxis: {
+            title: { text: `${getPriceLabel(stats.operation)} (${priceUnit})`, font: { family: 'Inter', size: 12, color: '#64748B' } },
+            showgrid: true,
+            gridcolor: '#F1F5F9',
+            tickformat: ',d',
+            tickfont: { family: 'Inter', size: 10, color: '#64748B' },
+            fixedrange: true
+        },
+        yaxis: {
+            title: { text: 'Estimated Listings', font: { family: 'Inter', size: 12, color: '#64748B' } },
+            showticklabels: true,
+            showgrid: true,
+            gridcolor: '#F1F5F9',
+            tickformat: ',0f',
+            tick0: 0,
+            dtick: Math.ceil(Math.max(...y) / 5),
+            tickfont: { family: 'Inter', size: 10, color: '#64748B' },
+            fixedrange: true
+        },
+        plot_bgcolor: '#FAFAFA',
+        paper_bgcolor: 'white',
+        height: 200,
+        font: { family: 'Inter' }
+    }, {
+        displayModeBar: false,
+    });
+}
 
 export default function HousingMap() {
     const [stats, setStats] = useState<HousingStats | null>(null);
     const [allStats, setAllStats] = useState<HousingStats[]>([]);
     const [showCard, setShowCard] = useState(false);
     const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
+    const [searchType, setSearchType] = useState<string>('vivienda');
+    const [operation, setOperation] = useState<string>('compra');
     const plotRef = useRef<HTMLDivElement>(null);
 
     const handleDistrictClick = async (e: React.MouseEvent<SVGPathElement>) => {
         const label = e.currentTarget.getAttribute('data-label');
         if (!label) return;
+
         const communeId = svgToDataCommune[label];
+
+        setSelectedDistrict(label);
         setShowCard(true);
+
         if (communeId) {
             try {
-                const data = await housingDataService.getStatsByCommune(communeId);
+                const data = await housingDataService.getStatsByCommune(communeId, searchType, operation);
                 setStats(data);
             } catch {
                 setStats(null);
@@ -116,22 +237,35 @@ export default function HousingMap() {
     const handleClose = () => {
         setShowCard(false);
         setStats(null);
+        setSelectedDistrict(null);
     };
 
     // Load all data on mount for coloring
     useEffect(() => {
         const loadAllStats = async () => {
             await housingDataService.loadData();
-            // Get all stats for coloring
+            // Get all stats for coloring with current filters
             const allData: HousingStats[] = [];
             for (const commune of Object.values(svgToDataCommune)) {
-                const data = await housingDataService.getStatsByCommune(commune);
+                const data = await housingDataService.getStatsByCommune(commune, searchType, operation);
                 if (data) allData.push(data);
             }
             setAllStats(allData);
         };
         loadAllStats();
-    }, []);
+    }, [searchType, operation]); // Re-load when filters change
+    
+    useEffect(() => {
+        if (selectedDistrict && showCard) {
+            const communeId = svgToDataCommune[selectedDistrict];
+            if (communeId) {
+                housingDataService.getStatsByCommune(communeId, searchType, operation)
+                    .then(data => setStats(data))
+                    .catch(() => setStats(null));
+            }
+        }
+    }, [searchType, operation, selectedDistrict, showCard]);
+    
     useEffect(() => {
         if (stats && plotRef.current) {
             renderNormalCurve(stats, plotRef.current);
@@ -145,6 +279,68 @@ export default function HousingMap() {
                     <h1 style={{color:'#0F172A', fontWeight: 600, fontSize: '1.5rem'}}>
                         Barcelona Housing Market
                     </h1>
+                    
+                    {/* Filter Controls */}
+                    <div style={{ 
+                        display: 'flex', 
+                        gap: '16px', 
+                        marginBottom: '16px',
+                        alignItems: 'center'
+                    }}>
+                        <div>
+                            <label style={{ 
+                                fontSize: '14px', 
+                                fontWeight: '500', 
+                                color: '#374151',
+                                marginRight: '8px'
+                            }}>
+                                Property Type:
+                            </label>
+                            <select 
+                                value={searchType} 
+                                onChange={(e) => setSearchType(e.target.value)}
+                                style={{
+                                    padding: '6px 12px',
+                                    border: '1px solid #D1D5DB',
+                                    borderRadius: '6px',
+                                    fontSize: '14px',
+                                    backgroundColor: 'white'
+                                }}
+                            >
+                                <option value="vivienda">Residential</option>
+                                <option value="comercial">Commercial</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label style={{ 
+                                fontSize: '14px', 
+                                fontWeight: '500', 
+                                color: '#374151',
+                                marginRight: '8px'
+                            }}>
+                                Operation:
+                            </label>
+                        <select 
+                            value={operation} 
+                            onChange={(e) => setOperation(e.target.value)}
+                            style={{
+                                padding: '6px 12px',
+                                border: '1px solid #D1D5DB',
+                                borderRadius: '6px',
+                                fontSize: '14px',
+                                backgroundColor: 'white'
+                            }}
+                        >
+                            <option value="compra">Purchase</option>
+                            <option value="alquiler">Rent</option>
+                            {searchType === 'vivienda' && (
+                                <option value="alquiler_habitacion">Room Rent</option>
+                            )}
+                        </select>
+                        </div>
+                    </div>
+                    
                     <svg width="600" height="600" viewBox="0 0 1000 1000">
                         {districtPaths.map(({ label, d }) => (
                             <path
@@ -166,7 +362,6 @@ export default function HousingMap() {
                 </div>
             </div>
 
-           
             {showCard && (
                 <div className="info-card">
                     <button onClick={handleClose} style={{
@@ -179,26 +374,43 @@ export default function HousingMap() {
                         padding: '4px 8px',
                         cursor: 'pointer'
                     }}>✕</button>
-                    
+
                     {!stats ? (
                         <div><p>No data available.</p></div>
                     ) : (
-                    <div>
+                        <div>
                             <h2>{stats.commune.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</h2>
                             <p className="date">{new Date(stats.date).toLocaleDateString()}</p>
+                            <p style={{ fontSize: '12px', color: '#6B7280', marginBottom: '16px' }}>
+                                {stats.search_type === 'vivienda' ? 'Residential' : 'Commercial'} • 
+                                {stats.operation === 'compra' ? ' Purchase' : 
+                                stats.operation === 'alquiler' ? ' Rent' : ' Room Rent'}
+                            </p>
                             
                             <div className="stat">
-                                <span className="stat-label">Median Price per sqm:</span>
-                                <span className="stat-value">€{Math.round(stats.median_price_per_sqm).toLocaleString('en-US')}</span>
+                                <span className="stat-label">Median {getPriceLabel(stats.operation)}:</span>
+                                <span className="stat-value">
+                                    {getPriceUnit(stats.operation)}{Math.round(getMedianPrice(stats)).toLocaleString('en-US')}
+                                </span>
                             </div>
                             <div className="stat">
-                                <span className="stat-label">Mean Price per sqm:</span>
-                                <span className="stat-value">€{Math.round(stats.mean_price_per_sqm).toLocaleString('en-US')}</span>
+                                <span className="stat-label">Mean {getPriceLabel(stats.operation)}:</span>
+                                <span className="stat-value">
+                                    {getPriceUnit(stats.operation)}{Math.round(getMeanPrice(stats)).toLocaleString('en-US')}
+                                </span>
                             </div>
                             <div className="stat">
                                 <span className="stat-label">Observations:</span>
                                 <span className="stat-value">{stats.num_observations.toLocaleString('en-US')}</span>
                             </div>
+                            
+                            {/* Show square meter info only for non-room rentals */}
+                            {stats.operation !== 'alquiler_habitacion' && stats.avg_square_m && (
+                                <div className="stat">
+                                    <span className="stat-label">Avg. Size:</span>
+                                    <span className="stat-value">{Math.round(stats.avg_square_m)} m²</span>
+                                </div>
+                            )}
                             
                             <div ref={plotRef} style={{ width: '100%', height: 200, marginTop: 16 }} />
                         </div>
@@ -207,68 +419,4 @@ export default function HousingMap() {
             )}
         </div>
     );
-}
-
-function renderNormalCurve(stats: HousingStats, container: HTMLDivElement) {
-    const mean = stats.mean_price_per_sqm;
-    const sd = stats.std_dev_price_per_sqm;
-    const min = stats.min_price_per_sqm;
-    const max = stats.max_price_per_sqm;
-
-    // Choose number of points for smoothness, capped for performance
-    const numPoints = 10; // fixed smoothness, avoids tying to sample size
-    const binWidth = (max - min) / numPoints; // €/sqm range per point
-
-    const x: number[] = [];
-    const y: number[] = [];
-
-    for (let i = 0; i <= numPoints; i++) {
-        const val = min + (i / numPoints) * (max - min);
-        x.push(val);
-
-        // PDF of normal distribution
-        const pdf = Math.exp(-0.5 * Math.pow((val - mean) / sd, 2)) / (sd * Math.sqrt(2 * Math.PI));
-
-        // Scale density to estimated count per bin
-        const estimatedCount = pdf * stats.num_observations * binWidth;
-        y.push(estimatedCount);
-    }
-
-    Plotly.newPlot(container, [{
-        x,
-        y,
-        type: 'scatter',
-        mode: 'lines',
-        line: { color: 'rgba(59, 130, 246, 0.8)', width: 3 },
-        fill: 'tozeroy',
-        fillcolor: 'rgba(59, 130, 246, 0.1)',
-        hovertemplate: '€/sqm: %{x:,.0f}<br>Listings: %{y:,.0f}<extra></extra>'
-    }], {
-        margin: { t: 20, b: 40, l: 50, r: 20 },
-        xaxis: {
-            title: { text: 'Price per sqm (€)', font: { family: 'Inter', size: 12, color: '#64748B' } },
-            showgrid: true,
-            gridcolor: '#F1F5F9',
-            tickformat: ',d',
-            tickfont: { family: 'Inter', size: 10, color: '#64748B' },
-            fixedrange: true
-        },
-        yaxis: {
-            title: { text: 'Estimated Listings', font: { family: 'Inter', size: 12, color: '#64748B' } },
-            showticklabels: true,
-            showgrid: true,
-            gridcolor: '#F1F5F9',
-            tickformat: ',0f', // integer ticks
-            tick0: 0,
-            dtick: Math.ceil(Math.max(...y) / 5), // ~5 evenly spaced ticks
-            tickfont: { family: 'Inter', size: 10, color: '#64748B' },
-            fixedrange: true
-        },
-        plot_bgcolor: '#FAFAFA',
-        paper_bgcolor: 'white',
-        height: 200,
-        font: { family: 'Inter' }
-    }, {
-        displayModeBar: false,
-    });
 }
