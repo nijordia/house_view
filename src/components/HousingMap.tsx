@@ -62,13 +62,13 @@ const districtPaths = [
 
 const districtLabels = [
     { label: "Ciutat Vella", x: 630, y: 558 },
-    { label: "Eixample", x: 557, y: 496 },
+    { label: "Eixample", x: 567, y: 500 },
     { label: "Sants-Montjuïc", x: 490, y: 688 },
     { label: "Les Corts", x: 330, y: 548 },
-    { label: "Sarrià-Sant Gervasi", x: 330, y: 390 },
+    { label: "Sarrià-Sant Gervasi", x: 335, y: 390 },
     { label: "Gràcia", x: 510, y: 390 },
     { label: "Horta-Guinardó", x: 470, y: 235 },
-    { label: "Nou Barris", x: 600, y: 149 },
+    { label: "Nou Barris", x: 600, y: 155 },
     { label: "Sant Andreu", x: 710, y: 226 },
     { label: "Sant Martí", x: 730, y: 400 }
 ];
@@ -173,7 +173,7 @@ function renderNormalCurve(stats: HousingStats, container: HTMLDivElement) {
         line: { color: 'rgba(59, 130, 246, 0.8)', width: 3 },
         fill: 'tozeroy',
         fillcolor: 'rgba(59, 130, 246, 0.1)',
-        hovertemplate: `${priceUnit}: %{x:,.0f}<br>Listings: %{y:,.0f}<extra></extra>`
+        hovertemplate: `${priceUnit}: %{x:,.0f}<extra></extra>`
     }], {
         margin: { t: 20, b: 40, l: 50, r: 20 },
         xaxis: {
@@ -356,7 +356,19 @@ export default function HousingMap() {
                             />
                         ))}
                         {districtLabels.map(({ label, x, y }) => (
-                            <text className="label" x={x} y={y} key={label}>{label}</text>
+                            <text 
+                                className="label" 
+                                x={x} 
+                                y={y} 
+                                key={label}
+                                style={{ 
+                                    fontWeight: 'bold',
+                                    fontSize: '16px',
+                                    fill: '#1F2937'
+                                }}
+                            >
+                                {label}
+                            </text>
                         ))}
                     </svg>
                 </div>
