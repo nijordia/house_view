@@ -10,13 +10,14 @@ export default function TechnicalArchitecture() {
       icon: '🕷️',
       color: 'emerald',
       description: 'Intelligent data acquisition from leading Spanish property platforms',
-      technologies: ['Python', 'Beautiful Soup', 'Selenium WebDriver', 'Requests', 'Rate Limiting'],
+      technologies: ['Python', 'Beautiful Soup', 'Requests', 'Rate Limiting', 'Git'],
       details: [
-        'Respectful crawling algorithms that honor robots.txt and rate limits',
+        'Crawling algorithms and countermeasures for data ingestion pipeline',
         'Multi-threaded data collection with exponential backoff strategies',
         'Robust error handling and automatic retry mechanisms',
         'Data validation and deduplication at collection point',
-        'Geographic coordinate mapping and district classification'
+        'Geographic coordinate mapping and district classification',
+        'Version control for data collection scripts using Git'
       ],
       challenge: "Challenge: Acquire comprehensive market data while respecting platform policies and maintaining data quality."
     },
@@ -26,13 +27,13 @@ export default function TechnicalArchitecture() {
       icon: '⚗️',
       color: 'cyan',
       description: 'ETL processes that transform raw listings into market intelligence',
-      technologies: ['Pandas', 'NumPy', 'SciPy', 'Statistical Analysis', 'Data Validation'],
+      technologies: ['Pandas', 'NumPy', 'SciPy', 'Statistical Analysis', 'Data Validation', 'Git'],
       details: [
         'Advanced outlier detection using IQR and Z-score methods',
         'Price normalization across property types and operations',
         'Statistical distribution analysis (quartiles, std dev, skewness)',
         'Time-series aggregation for trend analysis',
-        'Data quality scoring and completeness validation'
+        'Version control for processing scripts and notebooks with Git'
       ],
       challenge: "Challenge: Clean and normalize heterogeneous property data while preserving statistical integrity."
     },
@@ -42,13 +43,13 @@ export default function TechnicalArchitecture() {
       icon: '🗄️',
       color: 'teal',
       description: 'Optimized data structures for lightning-fast market analysis',
-      technologies: ['JSON Optimization', 'Data Compression', 'Indexing Strategies', 'Frontend Caching'],
+      technologies: ['JSON Optimization', 'Data Compression', 'Indexing Strategies', 'Frontend Caching', 'Git'],
       details: [
         'Hierarchical data organization by district, type, and operation',
         'Compressed JSON format for efficient browser loading',
         'Client-side caching with intelligent cache invalidation',
         'Optimized data structures for statistical calculations',
-        'Metadata enrichment for enhanced querying capabilities'
+        'Repository versioning and schema tracking with Git'
       ],
       challenge: "Challenge: Balance data richness with frontend performance and loading speed."
     },
@@ -58,13 +59,14 @@ export default function TechnicalArchitecture() {
       icon: '📊',
       color: 'blue',
       description: 'Interactive visualization bringing market patterns to life',
-      technologies: ['React', 'TypeScript', 'SVG Maps', 'Plotly.js', 'Responsive Design'],
+      technologies: ['React', 'TypeScript', 'SVG Maps', 'Plotly.js', 'Responsive Design', 'Git'],
       details: [
         'Custom SVG Barcelona district map with interactive hover states',
         'Real-time statistical distribution visualization with Plotly',
         'Dynamic color coding based on relative price performance',
         'Responsive design adapting to all screen sizes and devices',
-        'Smooth transitions and loading states for enhanced UX'
+        'Smooth transitions and loading states for enhanced UX',
+        'Version control for frontend codebase using Git'
       ],
       challenge: "Challenge: Present complex market data in an intuitive, interactive interface that reveals insights at a glance."
     }

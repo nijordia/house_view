@@ -1,26 +1,21 @@
 {
-  "name": "Barcelona Property Market Map",
-  "short_name": "Housing Map",
-  "description": "Interactive Barcelona Property Market analysis",
+  "name": "Barcelona Property Market Periscope",
+  "short_name": "Property Periscope",
+  "description": "Navigate Barcelona's property market with periscope-style analysis",
   "icons": [
     {
-      "src": "/favicon-16x16.png",
-      "sizes": "16x16",
+      "src": "/periscope-favicon-192x192.png",
+      "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/favicon-32x32.png",
-      "sizes": "32x32",
-      "type": "image/png"
-    },
-    {
-      "src": "/apple-touch-icon.png",
-      "sizes": "180x180",
+      "src": "/periscope-favicon-512x512.png", 
+      "sizes": "512x512",
       "type": "image/png"
     }
   ],
-  "theme_color": "#3B82F6",
-  "background_color": "#ffffff",
+  "start_url": "/",
   "display": "standalone",
-  "start_url": "/"
+  "theme_color": "#0891b2",
+  "background_color": "#0f172a"
 }

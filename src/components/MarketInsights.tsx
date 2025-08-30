@@ -75,7 +75,7 @@ export default function MarketInsights({ allStats }: MarketInsightsProps) {
     {
       title: "Intelligence Source",
       subtitle: "Data Pipeline",
-      value: "Idealista",
+      value: "Web Listings",
       district: "Market aggregation system",
       icon: "🤖",
       color: "blue"
