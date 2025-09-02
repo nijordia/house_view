@@ -1,3 +1,4 @@
+// ...existing code...
 import React, { useState } from 'react';
 
 export default function TechnicalArchitecture() {
@@ -72,39 +73,39 @@ export default function TechnicalArchitecture() {
     }
   ];
 
-  const colorConfig = {
-    emerald: {
-      bg: 'from-emerald-500/20 to-emerald-600/30',
-      border: 'border-emerald-500/30',
-      text: 'text-emerald-300',
-      dot: 'bg-emerald-400',
-      glow: 'shadow-emerald-500/20'
-    },
-    cyan: {
-      bg: 'from-cyan-500/20 to-cyan-600/30',
-      border: 'border-cyan-500/30',
-      text: 'text-cyan-300',
-      dot: 'bg-cyan-400',
-      glow: 'shadow-cyan-500/20'
-    },
-    teal: {
-      bg: 'from-teal-500/20 to-teal-600/30',
-      border: 'border-teal-500/30',
-      text: 'text-teal-300',
-      dot: 'bg-teal-400',
-      glow: 'shadow-teal-500/20'
-    },
-    blue: {
-      bg: 'from-blue-500/20 to-blue-600/30',
-      border: 'border-blue-500/30',
-      text: 'text-blue-300',
-      dot: 'bg-blue-400',
-      glow: 'shadow-blue-500/20'
-    }
-  };
+const colorConfig = {
+  emerald: {
+    bg: 'from-teal-500/20 to-teal-600/30',
+    border: 'border-teal-500/30',
+    text: 'text-teal-300',
+    dot: 'bg-teal-400',
+    glow: 'shadow-teal-500/20'
+  },
+  cyan: {
+    bg: 'from-sky-500/20 to-sky-600/30',
+    border: 'border-sky-500/30',
+    text: 'text-sky-300',
+    dot: 'bg-sky-400',
+    glow: 'shadow-sky-500/20'
+  },
+  teal: {
+    bg: 'from-teal-500/20 to-teal-600/30',
+    border: 'border-teal-500/30',
+    text: 'text-teal-300',
+    dot: 'bg-teal-400',
+    glow: 'shadow-teal-500/20'
+  },
+  blue: {
+    bg: 'from-blue-500/20 to-blue-600/30',
+    border: 'border-blue-500/30',
+    text: 'text-blue-300',
+    dot: 'bg-blue-400',
+    glow: 'shadow-blue-500/20'
+  }
+};
 
   return (
-    <section id="technical-architecture" className="py-20 bg-gradient-to-b from-black via-neutral-950 to-neutral-900">
+    <section id="technical-architecture" className="py-20 bg-gradient-to-b from-black via-neutral-950 to-neutral-900 text-neutral-100">
       <div className="max-w-6xl mx-auto px-6">
         <header className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-300 mb-6 font-geologica">
@@ -117,54 +118,54 @@ export default function TechnicalArchitecture() {
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Architecture Layers Navigation */}
-          <div className="space-y-4">
-            {architectureLayers.map((layer, index) => {
-              const colors = colorConfig[layer.color as keyof typeof colorConfig];
-              const isActive = activeLayer === layer.id;
-              
-              return (
-                <div
-                  key={layer.id}
-                  className={`group cursor-pointer p-6 rounded-2xl transition-all duration-300 border ${
-                    isActive 
-                      ? `bg-gradient-to-r ${colors.bg} ${colors.border} shadow-lg ${colors.glow}` 
-                      : 'bg-black/20 border-neutral-800/50 hover:border-neutral-700/50'
-                  }`}
-                  onClick={() => setActiveLayer(layer.id)}
-                >
-                  <div className="flex items-center gap-4 mb-3">
-                    <div className={`text-3xl transform transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`}>
-                      {layer.icon}
-                    </div>
-                    <div>
-                      <h3 className={`text-xl font-bold font-geologica ${isActive ? colors.text : 'text-neutral-200 group-hover:text-neutral-100'}`}>
-                        Layer {index + 1}: {layer.title}
-                      </h3>
-                    </div>
-                  </div>
-                  
-                  <p className={`font-geologica text-sm ${isActive ? 'text-neutral-300' : 'text-neutral-400'}`}>
-                    {layer.description}
-                  </p>
+<div className="space-y-4">
+  {architectureLayers.map((layer, index) => {
+    const colors = colorConfig[layer.color as keyof typeof colorConfig];
+    const isActive = activeLayer === layer.id;
 
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {layer.technologies.map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className={`px-3 py-1 rounded-lg text-xs font-geologica transition-colors duration-300 ${
-                          isActive 
-                            ? `${colors.text} bg-black/30` 
-                            : 'text-neutral-400 bg-neutral-800/50'
-                        }`}
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+    return (
+      <div
+        key={layer.id}
+        className={`group cursor-pointer p-6 rounded-2xl transition-all duration-300 border ${
+          isActive 
+            ? `bg-gradient-to-r ${colors.bg} ${colors.border} shadow-lg ${colors.glow} ${colors.text}`
+            : 'bg-black/20 border-neutral-800/50 hover:border-neutral-700/50 text-neutral-300'
+        }`}
+        onClick={() => setActiveLayer(layer.id)}
+      >
+        <div className="flex items-center gap-4 mb-3">
+          <div className={`text-3xl transform transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-105'}`}>
+            {layer.icon}
           </div>
+          <div>
+            <h3 className={`text-xl font-bold font-geologica ${isActive ? colors.text : 'text-neutral-300 group-hover:text-neutral-100'}`}>
+              Layer {index + 1}: {layer.title}
+            </h3>
+          </div>
+        </div>
+        
+        <p className={`font-geologica text-sm ${isActive ? 'text-neutral-300' : 'text-neutral-300'}`}>
+          {layer.description}
+        </p>
+
+        <div className="flex flex-wrap gap-2 mt-4">
+          {layer.technologies.map((tech, techIndex) => (
+            <span
+              key={techIndex}
+              className={`px-3 py-1 rounded-lg text-xs font-geologica transition-colors duration-300 ${
+                isActive 
+                  ? `${colors.text} bg-black/30` 
+                  : 'text-neutral-200 bg-neutral-800/40'
+              }`}
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  })}
+</div>
 
           {/* Layer Details */}
           <div className="lg:sticky lg:top-8">
