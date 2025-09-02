@@ -82,32 +82,6 @@ export default function MarketInsights({ allStats }: MarketInsightsProps) {
     }
   ];
 
-const colorConfig = {
-  emerald: {
-    bg: 'from-teal-500/10 to-teal-600/20',
-    border: 'border-teal-500/30',
-    text: 'text-teal-300',
-    glow: 'shadow-teal-500/10'
-  },
-  cyan: {
-    bg: 'from-sky-500/10 to-sky-600/20',
-    border: 'border-sky-500/30',
-    text: 'text-sky-300',
-    glow: 'shadow-sky-500/10'
-  },
-  teal: {
-    bg: 'from-teal-500/10 to-teal-600/20',
-    border: 'border-teal-500/30',
-    text: 'text-teal-300',
-    glow: 'shadow-teal-500/10'
-  },
-  blue: {
-    bg: 'from-blue-500/10 to-blue-600/20',
-    border: 'border-blue-500/30',
-    text: 'text-blue-300',
-    glow: 'shadow-blue-500/10'
-  }
-};
 
   return (
     <section className="bg-gradient-to-b from-neutral-950 to-black">
@@ -122,41 +96,49 @@ const colorConfig = {
         </header>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {insightCards.map((card, index) => {
-            const colors = colorConfig[card.color as keyof typeof colorConfig];
-            // Highlight font for "Most Premium District" and "Market Coverage"
-           const isHighlight = card.title === "Most Premium District" || card.title === "Market Coverage";
-           
-            return (
-              <div
-                key={index}
-                className={`group bg-black/40 backdrop-blur-sm border ${colors.border} p-6 rounded-2xl shadow-2xl hover:${colors.glow} hover:scale-105 transition-all duration-300`}
-              >
-                <div className="text-center">
-                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                    {card.icon}
-                  </div>
-                  
-                <h3 className={`text-lg font-bold font-geologica mb-2 ${
-                  isHighlight ? 'text-sky-200' : colors.text
-                }`}>
-                  {card.title}
-                </h3>
-                  
-                  <p className="text-neutral-400 text-sm font-geologica mb-4">
-                    {card.subtitle}
-                  </p>
-                  
-                  <div className="text-2xl font-bold text-neutral-100 font-geologica mb-2 drop-shadow-lg">
-                    {card.value}
-                  </div>
-              
-                  <p className="text-neutral-200 text-sm font-geologica">
-                                      {card.district}
-                  </p>
-                </div>
-              </div>
-            );
+{insightCards.map((card, index) => {
+  const isHighlight = card.title === "Most Premium District" || card.title === "Market Coverage";
+  return (
+    <div
+      key={index}
+      className={`group bg-black/40 backdrop-blur-sm p-6 rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300
+        ${card.color === 'emerald' ? 'border-teal-500/30' : ''}
+        ${card.color === 'cyan' ? 'border-sky-500/30' : ''}
+        ${card.color === 'teal' ? 'border-teal-500/30' : ''}
+        ${card.color === 'blue' ? 'border-blue-500/30' : ''}
+        border
+        ${card.color === 'emerald' ? 'hover:shadow-teal-500/10' : ''}
+        ${card.color === 'cyan' ? 'hover:shadow-sky-500/10' : ''}
+        ${card.color === 'teal' ? 'hover:shadow-teal-500/10' : ''}
+        ${card.color === 'blue' ? 'hover:shadow-blue-500/10' : ''}
+      `}
+    >
+      <div className="text-center">
+        <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+          {card.icon}
+        </div>
+        <h3 className={`text-lg font-bold font-geologica mb-2 ${
+          isHighlight ? 'text-sky-200'
+          : card.color === 'emerald' ? 'text-teal-300'
+          : card.color === 'cyan' ? 'text-sky-300'
+          : card.color === 'teal' ? 'text-teal-300'
+          : card.color === 'blue' ? 'text-blue-300'
+          : 'text-neutral-100'
+        }`}>
+          {card.title}
+        </h3>
+        <p className="text-neutral-400 text-sm font-geologica mb-4">
+          {card.subtitle}
+        </p>
+        <div className="text-2xl font-bold text-neutral-100 font-geologica mb-2 drop-shadow-lg">
+          {card.value}
+        </div>
+        <p className="text-neutral-200 text-sm font-geologica">
+          {card.district}
+        </p>
+      </div>
+    </div>
+  );
           })}
         </div>
       </div>
