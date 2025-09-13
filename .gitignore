@@ -1,3 +1,6 @@
 dist/
 node_modules/
 .vercel
+public\latest_data_old3.json
+public\latest_data_old2.json
+public\latest_data_old.json

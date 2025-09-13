@@ -201,7 +201,7 @@ export default function ProjectLanding() {
         </div>
 
         {/* Hero Section */}
-        <header className="text-center mb-16">
+        <header className="text-center mb-5">
           <div className="mb-8">
             <span className="inline-block px-6 py-3 bg-gradient-to-r from-cyan-600/20 to-teal-600/20 border border-cyan-500/30 text-cyan-300 rounded-full text-sm font-semibold font-geologica backdrop-blur-sm">
               🏠 Market Intelligence System
@@ -209,13 +209,16 @@ export default function ProjectLanding() {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-300 mb-6 font-geologica drop-shadow-lg">
-            Barcelona Property Periscope
+            Property Periscope
           </h1>
           
-          <p className="text-xl text-neutral-300 max-w-4xl mx-auto font-geologica leading-relaxed mb-8">
-            An eye in the sky for navigating a turbulentproperty market.  
-            This intelligence system ingests, aggregates, plots patterns across all districts in Barcelona—from 
-            the depths of <span className="text-emerald-300 font-semibold">data acquisition</span> to crystalline <span className="text-cyan-300 font-semibold">market insights</span>.
+          <p className="text-xl text-neutral-300 max-w-4xl mx-auto font-geologica leading-relaxed mb-8 ">
+            
+            Insights on Barcelona's property market in fullstack. This open-source projects ingests, aggregates, 
+            plots patterns across all districts in the city. Explore trends in commercial and residential listings
+            and find the right 
+            <span className="text-emerald-300 font-semibold"> opportunity</span>. 
+          
             <br />
 
           </p>
@@ -225,7 +228,7 @@ export default function ProjectLanding() {
               href="#interactive-map"
               className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-teal-700 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-cyan-500/25 transform hover:scale-105 transition-all duration-300 font-geologica border border-cyan-500/30 backdrop-blur-sm"
             >
-              Explore Market Depths
+              Dive into the Map
               <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
             </a>
             <a
@@ -234,6 +237,18 @@ export default function ProjectLanding() {
             >
               📊 View Technical Stack
             </a>
+            <a
+              href="https://github.com/nijordia/house_view"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-8 py-4 border-2 border-neutral-700/60 text-neutral-200 rounded-xl font-semibold hover:bg-neutral-800/40 hover:border-cyan-400 hover:text-cyan-200 transition-all duration-300 font-geologica backdrop-blur-sm"
+            >
+              <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24" className="mr-2">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.334-5.466-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23a11.52 11.52 0 0 1 3.003-.404c1.018.005 2.045.138 3.003.404 2.291-1.553 3.297-1.23 3.297-1.23.653 1.653.242 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.803 5.624-5.475 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+              </svg>
+              Contribute
+            </a>
+
           </div>
         </header>
       </div>
