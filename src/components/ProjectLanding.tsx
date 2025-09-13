@@ -209,13 +209,13 @@ export default function ProjectLanding() {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-300 mb-6 font-geologica drop-shadow-lg">
-            Property Periscope
+            Property Radar
           </h1>
           
           <p className="text-xl text-neutral-300 max-w-4xl mx-auto font-geologica leading-relaxed mb-8 ">
             
-            Insights on Barcelona's property market in fullstack. This open-source projects captures, aggregates, 
-            plots patterns across all districts in the city. Explore trends in commercial and residential listings
+            Insights on Barcelona's property market in fullstack. This open-source project captures, aggregates and 
+            plots pricing patterns across all districts in the city. Explore trends in commercial and residential listings
             and find the right 
             <span className="text-emerald-300 font-semibold"> opportunity</span>. 
           
