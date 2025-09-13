@@ -214,7 +214,7 @@ export default function ProjectLanding() {
           
           <p className="text-xl text-neutral-300 max-w-4xl mx-auto font-geologica leading-relaxed mb-8 ">
             
-            Insights on Barcelona's property market in fullstack. This open-source projects ingests, aggregates, 
+            Insights on Barcelona's property market in fullstack. This open-source projects captures, aggregates, 
             plots patterns across all districts in the city. Explore trends in commercial and residential listings
             and find the right 
             <span className="text-emerald-300 font-semibold"> opportunity</span>. 
