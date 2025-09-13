@@ -151,7 +151,7 @@ export default function ProjectLanding() {
         </svg>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-6">
         {/* Navigation Buttons - Top Right */}
         <div className="absolute top-5 right-10 hidden md:flex gap-4">
           <a
@@ -213,8 +213,8 @@ export default function ProjectLanding() {
           </h1>
           
           <p className="text-xl text-neutral-300 max-w-4xl mx-auto font-geologica leading-relaxed mb-8">
-            An eye in the sky for navigating turbulent property market.  
-            This intelligence system aggregates, analyzes, and illuminates market patterns across all districts—from 
+            An eye in the sky for navigating a turbulentproperty market.  
+            This intelligence system ingests, aggregates, plots patterns across all districts in Barcelona—from 
             the depths of <span className="text-emerald-300 font-semibold">data acquisition</span> to crystalline <span className="text-cyan-300 font-semibold">market insights</span>.
             <br />
 
@@ -236,26 +236,6 @@ export default function ProjectLanding() {
             </a>
           </div>
         </header>
-
-        {/* Key Statistics */}
-        <section className="grid md:grid-cols-3 gap-8 mb-16">
-          <div className="text-center p-8 bg-gradient-to-br from-black/40 to-neutral-900/60 rounded-2xl border border-cyan-500/20 shadow-2xl">
-            <div className="text-4xl font-bold text-cyan-300 font-geologica mb-2">10</div>
-            <div className="text-neutral-300 font-geologica">Barcelona Districts</div>
-            <div className="text-neutral-500 font-geologica text-sm mt-2">Complete coverage</div>
-          </div>
-          <div className="text-center p-8 bg-gradient-to-br from-black/40 to-neutral-900/60 rounded-2xl border border-teal-500/20 shadow-2xl">
-            <div className="text-4xl font-bold text-teal-300 font-geologica mb-2">15K+</div>
-            <div className="text-neutral-300 font-geologica">Properties Tracked</div>
-            <div className="text-neutral-500 font-geologica text-sm mt-2">Continuous monitoring</div>
-          </div>
-          <div className="text-center p-8 bg-gradient-to-br from-black/40 to-neutral-900/60 rounded-2xl border border-emerald-500/20 shadow-2xl">
-            <div className="text-4xl font-bold text-emerald-300 font-geologica mb-2">Monthly</div>
-            <div className="text-neutral-300 font-geologica">Market Updates</div>
-            <div className="text-neutral-500 font-geologica text-sm mt-2">Fresh intelligence</div>
-          </div>
-        </section>
-
       </div>
     </div>
   );

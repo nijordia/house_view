@@ -84,16 +84,8 @@ export default function MarketInsights({ allStats }: MarketInsightsProps) {
 
 
   return (
-    <section className="bg-gradient-to-b from-neutral-950 to-black">
+    <section className="bg-gradient-to-b from-neutral-950 to-black pb-10 pt-10">
       <div className="max-w-6xl mx-auto px-6">
-        <header className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-300 mb-6 font-geologica">
-            Market Intelligence Insights
-          </h2>
-          <p className="text-xl text-neutral-300 max-w-3xl mx-auto font-geologica">
-            Key discoveries from the depths of Barcelona's property market data
-          </p>
-        </header>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 {insightCards.map((card, index) => {

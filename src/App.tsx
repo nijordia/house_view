@@ -45,8 +45,9 @@ function App() {
   return (
     <div className="App">
       <ProjectLanding />
-      <HousingMap />
       <MarketInsights allStats={allStats} />
+      <HousingMap />
+      
       <TechnicalArchitecture />
       
     </div>

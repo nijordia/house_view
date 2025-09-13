@@ -141,11 +141,8 @@ export default function HousingMap() {
 
     return (
         <CavernMapWrapper>
-            <section id="interactive-map" className="mb-20">
+            <section id="interactive-map" className="mb-5">
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-300 mb-6 font-geologica">
-                        City Map
-                    </h2>
                     <p className="text-xl text-neutral-300 max-w-3xl mx-auto font-geologica mb-8">
                         Navigate Barcelona's property market. Each district reveals its own pricing patterns and market characteristics.
                     </p>
